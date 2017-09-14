@@ -23,7 +23,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">geoc
    </div>
-   <div id="projectbrief">Geocaching puzzle using the Arduino MKR-1000.</div>
+   <div id="projectbrief">Geocaching puzzle using the Arduino MKR1000.</div>
   </td>
  </tr>
  </tbody>
@@ -406,6 +406,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>After the last <a class="el" href="structgoal.html">goal</a> is completed this <a class="el" href="structhandler.html">handler</a> idles until the <a class="el" href="main_8ino.html#ab702106cf3b3e96750b6845ded4e0299">RESET</a> button was pressed. </p>
 
 </div>
 </div>
@@ -478,6 +479,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>In case the <a class="el" href="main_8ino.html#ab702106cf3b3e96750b6845ded4e0299">RESET</a> button was pressed and therefore a <a class="el" href="structstate.html#a18f9a368708bd3a9db159eda73cd3c41">state::reset</a> event occured, the fetch <a class="el" href="structhandler.html">handler</a> collects new goals from some source. After goals have been collected, <a class="el" href="structcontext.html#adc5dabc5f3a6ebe32acc9c37deefef78">context::current_goal</a> and <a class="el" href="structcontext.html#a71d44f72c133a5b27229ab4735c2832c">context::final_goal</a> will be updated. </p>
 
 </div>
 </div>
@@ -538,6 +540,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This <a class="el" href="structhandler.html">handler</a> is the initial state after setup is done and is the quasi idle state (only changing when something happens) </p>
 
 </div>
 </div>
@@ -556,6 +559,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This <a class="el" href="structhandler.html">handler</a> checks whether a completed subgoal (<a class="el" href="structcontext.html#adc5dabc5f3a6ebe32acc9c37deefef78">context::current_goal</a>) was the final one (#context::completed) and takes actions accordingly. </p>
 
 </div>
 </div>
@@ -602,6 +606,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>In case the <a class="el" href="main_8ino.html#a16f6bd504759f16b19245627a502a15f">update_loc</a> function couldn't get a sattelite connection this <a class="el" href="structhandler.html">handler</a> gives feedback via led (<a class="el" href="main_8ino.html#af2c3728e2cab6cc43f6cde3e34732fba">LED_R</a>) and tries to reconnect. </p>
 
 </div>
 </div>
@@ -662,6 +667,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>When the location of <a class="el" href="structcontext.html#adc5dabc5f3a6ebe32acc9c37deefef78">context::current_goal</a> (see <a class="el" href="structgoal.html">goal</a>) is reached and no errors occured, this <a class="el" href="structhandler.html">handler</a> checks the entered password. </p>
 
 </div>
 </div>
@@ -708,7 +714,7 @@ Variables</h2></td></tr>
 <p>Sets the 7-segment display array to the value stored in <a class="el" href="structcontext.html#a2429972162f48440b13408b0fb679b66">context::display_value</a>. Escape characters like <a class="el" href="main_8ino.html#ac97a64eda24ce7631d6aa6c64e75d10d">BLANK_C</a> and <a class="el" href="main_8ino.html#a6509735d562e70c455e6009692c2f690">DASH_C</a> will be parsed to their coresponding segment value.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ct</td><td></td></tr>
+    <tr><td class="paramname">ct</td><td>(read <a class="el" href="structcontext.html#a2429972162f48440b13408b0fb679b66">context::display_value</a>) </td></tr>
   </table>
   </dd>
 </dl>
@@ -757,6 +763,7 @@ If no goals have been fetched (#context::st::fetched) this function will just up
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Global context that represents the state machine. </p>
 
 </div>
 </div>
@@ -786,6 +793,7 @@ If no goals have been fetched (#context::st::fetched) this function will just up
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Gets executed and returns the next handler in <a class="el" href="main_8ino.html#afe461d27b9c48d5921c00d521181f12f">loop</a>. </p>
 
 </div>
 </div>

@@ -329,6 +329,10 @@ void update_display(context* ct){
 
 ///////////////////////////// STATES //////////////////////////////
 
+/**
+ * This #handler is the initial state after setup is done and
+ * is the quasi idle state (only changing when something happens)
+ */
 handler main_handler(context* ct){
 	if(!ct->st.fetched){
 		ct->display_value[0] = DASH_C;
@@ -359,6 +363,11 @@ handler main_handler(context* ct){
 	}
 }
 
+/**
+ * When the location of #context::current_goal (see #goal)
+ * is reached and no errors occured, this #handler checks
+ * the entered password.
+ */
 handler subgoal_handler(context* ct){
 	if(ct->st.pos){
 		if(ct->display_value[ct->input_pos] == DASH_C){
@@ -401,6 +410,13 @@ handler subgoal_handler(context* ct){
 	}
 }
 
+/**
+ * In case the #RESET button was pressed and therefore
+ * a #state::reset event occured, the fetch #handler
+ * collects new goals from some source.
+ * After goals have been collected, #context::current_goal and
+ * #context::final_goal will be updated.
+ */
 handler fetch_handler(context* ct){
 	ct->st.fetched = false;
 	const uint32_t timeout = millis() + GPS_SERIAL_TIMEOUT;
@@ -430,6 +446,10 @@ handler fetch_handler(context* ct){
 	}
 }
 
+/**
+ * This #handler checks whether a completed subgoal (#context::current_goal)
+ * was the final one (#context::completed) and takes actions accordingly.
+ */
 handler next_goal_handler(context* ct){
 	ct->st.completed = ct->current_goal == ct->final_goal;
 
@@ -448,6 +468,10 @@ handler next_goal_handler(context* ct){
 	}
 }
 
+/**
+ * After the last #goal is completed this #handler idles
+ * until the #RESET button was pressed.
+ */
 handler complete_handler(context* ct){
 	if(!ct->st.reset){
 		return (handler) {complete_handler};
@@ -459,6 +483,10 @@ handler complete_handler(context* ct){
 	}
 }
 
+/**
+ * In case the #update_loc function couldn't get a sattelite connection
+ * this #handler gives feedback via led (#LED_R) and tries to reconnect.
+ */
 handler satcon_handler(context* ct){
 	digitalWrite(LED_R, HIGH);
 
@@ -474,7 +502,9 @@ handler satcon_handler(context* ct){
 
 ////////////////////////////// SETUP //////////////////////////////
 
+/** Global context that represents the state machine. */
 context ct_g;
+/** Gets executed and returns the next handler in #loop. */
 handler handler_g;
 
 void setup(){
@@ -494,9 +524,6 @@ void setup(){
 	while(!Serial1);
 
 	display.setBrightness(BRIGHTNESS);
-
-	/*byte settingsArray[] = {0x03, 0xFA, 0x00, 0x80, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-	configureUblox(settingsArray);*/
 
 	print_status("main_handler", &ct_g);
 }
