@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['completed',['completed',['../structstate.html#ab886b0418db51dee2f742881f349efba',1,'state']]],
-  ['count',['count',['../structstate.html#af8f1c0a73c88e3f35577b0feb2a65506',1,'state']]]
+  ['btn',['btn',['../structcontext.html#a03e122c131af210af599e17f63323d02',1,'context']]]
 ];

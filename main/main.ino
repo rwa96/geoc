@@ -88,27 +88,37 @@ typedef struct{
 typedef struct handler_wrapper{
 	/**
 	 * Execute to get the next handler.
-	 * @param context (to apply changes on and to decide which #handler will be returned next)
-	 * @return handler (next handler to execute in a infinite loop)
+	 *
+	 * @param ct #context (to apply changes on and to decide which #handler will be returned next)
+	 * @return #handler (next handler to execute in a infinite loop)
 	 */
-	struct handler_wrapper (*handle)(context*);
+	struct handler_wrapper (*handle)(context* ct);
 } handler;
 
 
 ///////////////////////////// GLOBALS /////////////////////////////
 
+/** Earth radius in meters. */
 #define EARTH_RADIUS 6371e3
 
+/** Time to wait for a gps connection timeout (see #satcon_handler). */
 #define GPS_TIMEOUT 4000
+/** Maximum to wait for serial transmition of the GPS module. */
 #define GPS_SERIAL_TIMEOUT 100
-#define GPS_SAMPLE_SIZE 3
-#define DST_TOLERANCE 40
-
+/** Read delay to avoid button bouncing. */
+#define BTN_DELAY 100
+/** Radius (in meters) of the target area for goals (#goal). */
+#define DST_TOLERANCE 20
+/** Brightness level for the 7-segment display array. */
 #define BRIGHTNESS 0xF
+/** Escape character for ' '. */
 #define BLANK_C 0xFF
+/** Excape character for '-'. */
 #define DASH_C 0xFE
 
+/** Dio pin for TM1637 chip. */
 #define DIO 7
+/** Clk pin for TM1637 chip. */
 #define CLK 8
 /** Reset button. */
 #define RESET 0
@@ -119,14 +129,19 @@ typedef struct handler_wrapper{
 /** Reset button. */
 #define LED_R 2
 
-/** Read delay to avoid button bouncing. */
-#define BTN_DELAY 100
 
 //////////////////////////// UTILITIES ////////////////////////////
 
+/** Interface for a connected 7-segment display array. */
 TM1637Display display(CLK, DIO);
+/** Interface for a connected gps module. */
 TinyGPSPlus gps;
 
+/**
+ * Initiates a #context struct with default values.
+ *
+ * @param ct (to be initiated)
+ */
 void init_context(context* ct){
 	ct->input_pos = 0;
 	for(int i = 0; i < 4; i++){
@@ -142,6 +157,12 @@ void init_context(context* ct){
 }
 
 #ifndef NDEBUG
+/**
+ * This function can be used to debug state transitions (see @handler).
+ *
+ * @param next_handler (zero terminated string describing the next handler)
+ * @param ct (#context in use)
+ */
 void print_status(const char* next_handler, const context* ct){
 	Serial.println("Context:");
 	Serial.print("\tinput_pos = ");
@@ -175,10 +196,21 @@ void print_status(const char* next_handler, const context* ct){
 void print_status(const char* next_handler, const context* ct){return;}
 #endif
 
+/**
+ * Degree to rad conversion.
+ *
+ * @param degree (degree value to be converted)
+ */
 double deg_to_rad(const double degree){
 	return PI * degree / 180;
 }
 
+/**
+ * Set the digits of the 7-segment display array
+ * to distance (in meters) to the current goal.
+ *
+ * @param ct (to obtain #context::distance and write to #context::display_value)
+ */
 void set_distance(context* ct){
 	int8_t digit;
 	bool dig_enable = false;
@@ -198,6 +230,18 @@ void set_distance(context* ct){
 	}
 }
 
+/**
+ * Obtain current location from GPS module's serial connection
+ * and calculates distance to current goal.
+ * <ul>
+ *   <li>If its not possible to obtain location data (see #GPS_TIMEOUT)
+ *   satcon wil be set to false (#state::satcon)</li>
+ *   <li>If no goals have been fetched (#context::st::fetched) this function
+ *   will just update satellite connection status but not the distance.</li>
+ * </ul>
+ *
+ * @param ct (to check and update #context::distance and #context::st)
+ */
 void update_loc(context* ct){
 	static uint32_t last_update = millis();
 	const uint32_t timeout = millis() + GPS_SERIAL_TIMEOUT;
@@ -231,6 +275,12 @@ void update_loc(context* ct){
 	ct->st.satcon = millis() < (last_update + GPS_TIMEOUT);
 }
 
+/**
+ * Iterates over every button in #context::btn and
+ * updates their state if possible (see #BTN_DELAY and #button::event)
+ *
+ * @param ct (update #context::btn and #context:st)
+ */
 void update_buttons(context* ct){
 	static uint32_t next_check = 0;
 	const uint32_t current_time = millis();
@@ -252,6 +302,14 @@ void update_buttons(context* ct){
 	}
 }
 
+/**
+ * Sets the 7-segment display array to the value stored in
+ * #context::display_value.
+ * Escape characters like #BLANK_C and #DASH_C will be parsed to their
+ * coresponding segment value.
+ *
+ * @param ct (read #context::display_value)
+ */
 void update_display(context* ct){
 	uint8_t digits[4] = {0};
 

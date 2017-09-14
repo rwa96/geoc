@@ -60,23 +60,44 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="structhandler-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">handler Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:aa80afc1988968890a42f1a6e575b5c24"><td class="memItemLeft" align="right" valign="top"><a id="aa80afc1988968890a42f1a6e575b5c24"></a>
-struct handler_wrapper(*&#160;</td><td class="memItemRight" valign="bottom"><b>handle</b> )(<a class="el" href="structcontext.html">context</a> *)</td></tr>
-<tr class="separator:aa80afc1988968890a42f1a6e575b5c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+Data Fields</h2></td></tr>
+<tr class="memitem:a3196264d985deb41102a137dc45aa2f2"><td class="memItemLeft" align="right" valign="top">struct handler_wrapper(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhandler.html#a3196264d985deb41102a137dc45aa2f2">handle</a> )(<a class="el" href="structcontext.html">context</a> *ct)</td></tr>
+<tr class="separator:a3196264d985deb41102a137dc45aa2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This is recursive type is part of the core logic of this sketch. A hanlder can be executed and depending on the context that was passed it returnes a new handler. This is used to create a state machine where handlers are states and returning the next handler is the transition (see #setup) </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>main/main.ino</li>
+<div class="textblock"><p>This is recursive type is part of the core logic of this sketch. A hanlder can be executed and depending on the context that was passed it returnes a new handler. This is used to create a state machine where handlers are states and returning the next handler is the transition (see <a class="el" href="main_8ino.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a>) </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a3196264d985deb41102a137dc45aa2f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3196264d985deb41102a137dc45aa2f2">&#9670;&nbsp;</a></span>handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct handler_wrapper(* handler::handle) (<a class="el" href="structcontext.html">context</a> *ct)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Execute to get the next handler.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ct</td><td><a class="el" href="structcontext.html">context</a> (to apply changes on and to decide which <a class="el" href="structhandler.html">handler</a> will be returned next) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structhandler.html">handler</a> (next handler to execute in a infinite loop) </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>main/<a class="el" href="main_8ino.html">main.ino</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

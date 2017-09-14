@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['ln',['ln',['../structgoal.html#a5d2ed56065734d91d3cc6d8e40f4b094',1,'goal']]],
-  ['lt',['lt',['../structgoal.html#a218b0b9c67deef2caf91d0345f19be8b',1,'goal']]]
+  ['handle',['handle',['../structhandler.html#a3196264d985deb41102a137dc45aa2f2',1,'handler']]],
+  ['handler',['handler',['../structhandler.html',1,'']]],
+  ['handler_5fg',['handler_g',['../main_8ino.html#a2274fc748b07d6bb5c89a6c760d5ed7a',1,'main.ino']]]
 ];
