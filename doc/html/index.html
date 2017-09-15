@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>geoc: Main Page</title>
+<title>geoc: Geocaching puzzle using the Arduino MKR1000</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,6 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">geoc
    </div>
-   <div id="projectbrief">Geocaching puzzle using the Arduino MKR1000.</div>
   </td>
  </tr>
  </tbody>
@@ -60,10 +59,71 @@ $(function() {
 
 <div class="header">
   <div class="headertitle">
-<div class="title">geoc Documentation</div>  </div>
+<div class="title">Geocaching puzzle using the Arduino MKR1000 </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><p>In this puzzle you need to find passwords that are hidden in certain locations. When you reach a specified location, you can enter the corresponding password and the next location is unlocked. The challenge is to figure out, how to find the locations and the passwords.</p>
+<p>To interact with this puzzle, there are 3 buttons:</p><ul>
+<li><b>Reset</b> to reset the puzzle (it recommended to disconnect this button when playing)</li>
+<li><b>Pos</b> to set the cursor position (if the puzzle is in input mode)</li>
+<li><b>Count</b> is counting at the current cursor position (if the puzzle is in input mode)</li>
+</ul>
+<p>The puzzle gives feedback via a 4-digit 7-segment display and a LED:</p><ul>
+<li><b>4-digit 7-segment display</b><ul>
+<li>if its not possible to obtain a gps signal or there are no goals configured, this display shows 4 dashes</li>
+<li>When the current goal's location <b>isn't</b> reached, the display shows the distance to it</li>
+<li>When the current goal's location <b>is</b> reached a single dash is shown at cursor position</li>
+</ul>
+</li>
+<li><b>LED</b> lights up when sattelite connection is lost</li>
+</ul>
+<h3>How it works</h3>
+<div class="image">
+<img src="doc/state_machine.png" alt="Check the standalone README.md if no image shows up here" title="Abstract state machine of the implementation"/>
+</div>
+<p>The shown state machine consists of the following states:</p><ul>
+<li><b>main_handler</b> is the initial state after setup is done and is the quasi idle state (only changing when something happens)</li>
+<li><b>fetch_handler</b> collects new goals from some source (not implemented yet) in case the reset button was pressed.</li>
+<li><b>satcon_handler</b> gives feedback via LED and tries to reconnect in case the sattelite connection was lost.</li>
+<li><b>subgoal_handler</b> checks the entered password when the location of current goal is reached and no errors occured.</li>
+<li><b>next_goal_handler</b> checks whether the completed subgoal was the final one and if so takes actions accordingly.</li>
+<li><b>complete_handler</b> idles until the reset button was pressed when the last goal is completed.</li>
+</ul>
+<p>The shown state machine is dependent on the following conditions:</p><ul>
+<li><b>reset</b> The reset button was pressed</li>
+<li><b>satcon</b> Satellite is not timed out</li>
+<li><b>reached</b> Location of the current goal is reached</li>
+<li><b>fetched</b> New goals have been fetched (not implemented yet)</li>
+<li><b>passwd</b> The current goals' password was entered correctly</li>
+<li><b>completed</b> The final goal was completed (YOU WON!)</li>
+</ul>
+<h3>Setup</h3>
+<h4>Dependencies</h4>
+<ul>
+<li><a href="http://arduiniana.org/libraries/tinygpsplus/">TinyGPS++</a></li>
+<li><a href="https://github.com/avishorp/TM1637/blob/master/TM1637Display.h">TM1637Display</a></li>
+</ul>
+<h4>Hardware setup</h4>
+<ul>
+<li><b>GPS</b> (<em>XCSOURCE GPS NEO-6M Module</em>)</li>
+<li><b>7-segment array</b> (<em>4 Bits Digital Tube LED Display Module</em>)</li>
+<li><b>LED</b> (<em>standard red led</em>)</li>
+<li><b>resistor</b> (<em>220 &Omega;</em>)</li>
+<li><b>buttons</b> (<em>Momentary switch</em>)</li>
+</ul>
+<div class="image">
+<img src="doc/circuid.png" alt="Check the standalone README.md if no image shows up here" title="Breadboard setup"/>
+</div>
+<h3>Todos</h3>
+<ul>
+<li><b>standby mode</b> (<em>disable wifi, gps and wait for hardware interrupt</em>)</li>
+<li><b>HIL</b> (<em>having tests as todo... how original!</em>)</li>
+<li><b>fetch_handler</b> has currently no purpose and the whole idea of fetching goals isn't implemented yet</li>
+<li><b>complete hardware setup</b> by adding an akku to the circuid</li>
+<li><b>hadware pullup resistors</b> for the buttons instead of software pullup</li>
+<li><b>feedback when the game is won</b> (<em>currently 4 dashes are displayed</em>) </li>
+</ul>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

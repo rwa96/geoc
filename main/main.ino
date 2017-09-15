@@ -448,7 +448,7 @@ handler fetch_handler(context* ct){
 
 /**
  * This #handler checks whether a completed subgoal (#context::current_goal)
- * was the final one (#context::completed) and takes actions accordingly.
+ * was the final one (#context::completed) and if so takes actions accordingly.
  */
 handler next_goal_handler(context* ct){
 	ct->st.completed = ct->current_goal == ct->final_goal;
